@@ -18,6 +18,8 @@ const specializations = ["All", "Cyber Law", "Criminal Law", "Family Law", "Corp
 const LawyerFinderPage = () => {
   const [search, setSearch] = useState("");
   const [selectedSpec, setSelectedSpec] = useState("All");
+  const location = useLocation();
+  const isInDashboard = location.pathname.startsWith("/client-dashboard") || location.pathname.startsWith("/lawyer-dashboard");
 
   const filtered = lawyers.filter((l) => {
     const matchesSearch = l.name.toLowerCase().includes(search.toLowerCase()) || l.location.toLowerCase().includes(search.toLowerCase());
@@ -26,10 +28,10 @@ const LawyerFinderPage = () => {
   });
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <div className={`${isInDashboard ? "" : "min-h-screen"} bg-background`}>
+      {!isInDashboard && <Navbar />}
 
-      <div className="pt-24 pb-16 px-6">
+      <div className={`${isInDashboard ? "p-6 md:p-10" : "pt-24 pb-16 px-6"}`}>
         <div className="container mx-auto max-w-6xl">
           <div className="mb-10">
             <h1 className="font-heading text-3xl md:text-4xl font-semibold text-foreground mb-3">Find a Lawyer</h1>
