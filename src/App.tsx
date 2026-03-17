@@ -8,6 +8,9 @@ import AIChatPage from "./pages/AIChatPage.tsx";
 import LawyerFinderPage from "./pages/LawyerFinderPage.tsx";
 import LawyerProfilePage from "./pages/LawyerProfilePage.tsx";
 import DocumentAnalyzerPage from "./pages/DocumentAnalyzerPage.tsx";
+import CasePredictorPage from "./pages/CasePredictorPage.tsx";
+import ClientDashboardPage from "./pages/ClientDashboardPage.tsx";
+import LawyerDashboardPage from "./pages/LawyerDashboardPage.tsx";
 import BookingPage from "./pages/BookingPage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -22,10 +25,13 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/client-dashboard" element={<ClientDashboardPage />} />
+          <Route path="/lawyer-dashboard" element={<LawyerDashboardPage />} />
           <Route path="/chat" element={<AIChatPage />} />
           <Route path="/lawyers" element={<LawyerFinderPage />} />
           <Route path="/lawyers/:id" element={<LawyerProfilePage />} />
           <Route path="/documents" element={<DocumentAnalyzerPage />} />
+          <Route path="/case-predictor" element={<CasePredictorPage />} />
           <Route path="/book/:id" element={<BookingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<LoginPage />} />
