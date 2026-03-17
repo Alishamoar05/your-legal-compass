@@ -117,6 +117,7 @@ async def analyze_with_gemini(raw_text: str, metadata: Dict[str, Any]) -> Dict[s
     try:
         content = data["candidates"][0]["content"]["parts"][0]["text"]
         parsed = json.loads(content)
+        return parsed
     except httpx.HTTPError as e:
         print(f"HTTP Error calling Gemini API: {e}")
         raise Exception(f"Gemini API error: {e}")
@@ -177,8 +178,9 @@ async def analyze_signature_with_gemini(raw_text: str) -> dict:
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}"
     payload = {
         "contents": [
-            {"role": "user", "parts": [{"text": system_prompt}]},
-            {"role": "user", "parts": [{"text": f"DOCUMENT TEXT:\n{raw_text}"}]}
+            {
+                "parts": [{"text": system_prompt + "\n\nDOCUMENT TEXT:\n" + raw_text}]
+            }
         ]
     }
 
@@ -261,8 +263,9 @@ async def chat_with_gemini(message: str) -> dict:
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}"
     payload = {
         "contents": [
-            {"role": "user", "parts": [{"text": system_prompt}]},
-            {"role": "user", "parts": [{"text": f"USER QUERY:\n{message}"}]}
+            {
+                "parts": [{"text": system_prompt + "\n\nUSER QUERY:\n" + message}]
+            }
         ]
     }
 
