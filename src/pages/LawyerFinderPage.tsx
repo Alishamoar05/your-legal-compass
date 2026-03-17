@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Search, Star, MapPin, Briefcase, Filter } from "lucide-react";
 import Navbar from "@/components/Navbar";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const lawyers = [
   { id: 1, name: "Adv. Priya Sharma", specialization: "Cyber Law", location: "Mumbai", rating: 4.9, experience: 12, fee: "$150/hr", image: "" },
