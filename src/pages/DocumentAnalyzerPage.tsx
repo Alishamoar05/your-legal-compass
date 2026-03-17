@@ -1,11 +1,14 @@
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Upload, FileText, AlertTriangle, CheckCircle, X } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 
 const DocumentAnalyzerPage = () => {
   const [file, setFile] = useState<File | null>(null);
   const [analyzed, setAnalyzed] = useState(false);
+  const location = useLocation();
+  const isInDashboard = location.pathname.startsWith("/client-dashboard") || location.pathname.startsWith("/lawyer-dashboard");
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -21,9 +24,9 @@ const DocumentAnalyzerPage = () => {
   const mockAnalysis = {
     summary: "This is a standard residential lease agreement with a 12-month term. The agreement includes standard clauses for rent payment, security deposit, maintenance responsibilities, and termination conditions.",
     riskClauses: [
-      { text: "Tenant forfeits entire security deposit if lease is terminated early", severity: "high" },
-      { text: "Landlord may enter premises without notice for inspections", severity: "high" },
-      { text: "Automatic rent increase of 10% upon renewal", severity: "medium" },
+      { text: "Tenant forfeits entire security deposit if lease is terminated early", severity: "high" as const },
+      { text: "Landlord may enter premises without notice for inspections", severity: "high" as const },
+      { text: "Automatic rent increase of 10% upon renewal", severity: "medium" as const },
     ],
     keyPoints: [
       "Monthly rent: $1,500 due on the 1st",
@@ -35,10 +38,10 @@ const DocumentAnalyzerPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <div className={`${isInDashboard ? "" : "min-h-screen"} bg-background`}>
+      {!isInDashboard && <Navbar />}
 
-      <div className="pt-24 pb-16 px-6">
+      <div className={`${isInDashboard ? "p-6 md:p-10" : "pt-24 pb-16 px-6"}`}>
         <div className="container mx-auto max-w-5xl">
           <div className="mb-10">
             <h1 className="font-heading text-3xl md:text-4xl font-semibold text-foreground mb-3">Document Analyzer</h1>
@@ -69,7 +72,6 @@ const DocumentAnalyzerPage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, ease: [0.2, 0, 0, 1] }}
             >
-              {/* File info */}
               <div className="bg-card rounded-2xl p-5 card-shadow flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -85,13 +87,11 @@ const DocumentAnalyzerPage = () => {
                 </button>
               </div>
 
-              {/* Summary */}
               <div className="bg-card rounded-2xl p-6 card-shadow">
                 <h3 className="font-heading text-lg font-semibold text-foreground mb-3">Summary</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{mockAnalysis.summary}</p>
               </div>
 
-              {/* Risk Clauses */}
               <div className="bg-card rounded-2xl p-6 card-shadow">
                 <h3 className="font-heading text-lg font-semibold text-foreground mb-4">Risk Clauses</h3>
                 <div className="space-y-3">
@@ -111,7 +111,6 @@ const DocumentAnalyzerPage = () => {
                 </div>
               </div>
 
-              {/* Key Points */}
               <div className="bg-card rounded-2xl p-6 card-shadow">
                 <h3 className="font-heading text-lg font-semibold text-foreground mb-4">Key Points</h3>
                 <ul className="space-y-2">

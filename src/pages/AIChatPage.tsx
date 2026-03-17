@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Send, Scale, Sparkles, ArrowRight } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 
 interface Message {
@@ -23,6 +24,8 @@ const suggestedQuestions = [
 const AIChatPage = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
+  const location = useLocation();
+  const isInDashboard = location.pathname.startsWith("/client-dashboard") || location.pathname.startsWith("/lawyer-dashboard");
 
   const handleSend = () => {
     if (!input.trim()) return;
@@ -57,10 +60,10 @@ const AIChatPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <Navbar />
+    <div className={`flex flex-col ${isInDashboard ? "min-h-[calc(100vh-3.5rem)]" : "min-h-screen"} bg-background`}>
+      {!isInDashboard && <Navbar />}
 
-      <div className="flex-1 pt-20 pb-32">
+      <div className={`flex-1 ${isInDashboard ? "pb-24" : "pt-20 pb-32"}`}>
         <div className="container mx-auto max-w-3xl px-6">
           {messages.length === 0 ? (
             <motion.div
@@ -165,7 +168,7 @@ const AIChatPage = () => {
       </div>
 
       {/* Input */}
-      <div className="fixed bottom-0 left-0 right-0 bg-background/80 backdrop-blur-md border-t border-border p-4">
+      <div className={`fixed bottom-0 ${isInDashboard ? "left-0" : "left-0"} right-0 bg-background/80 backdrop-blur-md border-t border-border p-4 z-30`}>
         <div className="container mx-auto max-w-3xl">
           <div className="flex gap-3 items-center bg-card rounded-full px-5 py-2 card-shadow glow-accent">
             <input

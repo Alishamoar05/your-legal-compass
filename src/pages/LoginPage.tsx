@@ -1,10 +1,21 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Scale, Mail, Lock, User, ArrowRight } from "lucide-react";
 
 const LoginPage = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const [role, setRole] = useState<"client" | "lawyer">("client");
+  const navigate = useNavigate();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (role === "lawyer") {
+      navigate("/lawyer-dashboard");
+    } else {
+      navigate("/client-dashboard");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-6">
@@ -28,7 +39,7 @@ const LoginPage = () => {
         </div>
 
         <div className="bg-card rounded-2xl p-8 card-shadow">
-          <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+          <form className="space-y-4" onSubmit={handleSubmit}>
             {!isLogin && (
               <div>
                 <label className="block text-sm font-medium text-foreground mb-1.5">Full Name</label>
@@ -55,15 +66,34 @@ const LoginPage = () => {
               </div>
             </div>
 
-            {!isLogin && (
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-1.5">I am a</label>
-                <div className="grid grid-cols-2 gap-3">
-                  <button type="button" className="rounded-lg border border-primary bg-primary/5 p-3 text-sm font-medium text-primary">User</button>
-                  <button type="button" className="rounded-lg border border-border p-3 text-sm font-medium text-muted-foreground hover:bg-muted transition-colors">Lawyer</button>
-                </div>
+            {/* Role Selection - shown on both login and signup */}
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-1.5">I am a</label>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => setRole("client")}
+                  className={`rounded-lg border p-3 text-sm font-medium transition-colors ${
+                    role === "client"
+                      ? "border-primary bg-primary/5 text-primary"
+                      : "border-border text-muted-foreground hover:bg-muted"
+                  }`}
+                >
+                  Client
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setRole("lawyer")}
+                  className={`rounded-lg border p-3 text-sm font-medium transition-colors ${
+                    role === "lawyer"
+                      ? "border-primary bg-primary/5 text-primary"
+                      : "border-border text-muted-foreground hover:bg-muted"
+                  }`}
+                >
+                  Lawyer
+                </button>
               </div>
-            )}
+            </div>
 
             <button type="submit" className="w-full rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:bg-primary-dark transition-colors active:scale-95 flex items-center justify-center gap-2">
               {isLogin ? "Sign In" : "Create Account"}
