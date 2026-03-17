@@ -31,6 +31,28 @@ const AIChatPage = () => {
     if (!input.trim()) return;
 
     const userMsg: Message = { role: "user", content: input };
+    const lowerInput = input.toLowerCase();
+
+    // Simple keyword-based validation for law-related topics
+    const legalKeywords = [
+      "law", "court", "sue", "illegal", "contract", "landlord", "rights",
+      "tenant", "complaint", "fake", "assault", "crime", "police", "legal",
+      "lawyer", "attorney", "divorce", "custody", "property", "evict",
+      "terminated", "fraud", "scam", "theft", "warrant", "arrest"
+    ];
+
+    const isLawRelated = legalKeywords.some(keyword => lowerInput.includes(keyword));
+
+    if (!isLawRelated) {
+      const errorMsg: Message = {
+        role: "assistant",
+        content: "Invalid input. I am an AI legal assistant. Please ask a law-related question so I can provide relevant guidance.",
+      };
+      setMessages([...messages, userMsg, errorMsg]);
+      setInput("");
+      return;
+    }
+
     const aiMsg: Message = {
       role: "assistant",
       content: "",

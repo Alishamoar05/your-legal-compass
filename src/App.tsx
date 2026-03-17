@@ -35,6 +35,7 @@ const App = () => (
           <Route path="/client-dashboard" element={<ClientLayout />}>
             <Route index element={<ClientDashboardPage />} />
             <Route path="chat" element={<AIChatPage />} />
+            <Route path="documents" element={<DocumentAnalyzerPage />} />
             <Route path="lawyers" element={<LawyerFinderPage />} />
             <Route path="lawyers/:id" element={<LawyerProfilePage />} />
             <Route path="book/:id" element={<BookingPage />} />

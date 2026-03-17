@@ -24,13 +24,13 @@ const CursorGradient = () => {
       }}
     >
       <motion.div
-        className="pointer-events-none absolute w-[500px] h-[500px] rounded-full opacity-20 blur-[120px]"
+        className="pointer-events-none absolute w-[500px] h-[500px] rounded-full opacity-100 blur-[80px]"
         style={{
           x: springX,
           y: springY,
           translateX: "-50%",
           translateY: "-50%",
-          background: "radial-gradient(circle, hsl(157 22% 39% / 0.4), hsl(43 64% 52% / 0.2), transparent 70%)",
+          background: "radial-gradient(circle, rgba(79,122,106,0.15), transparent 70%)",
         }}
       />
     </motion.div>

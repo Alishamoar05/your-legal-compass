@@ -5,14 +5,18 @@ import base64
 from typing import Any, Dict
 import matplotlib
 import matplotlib.pyplot as plt
+import joblib
+import numpy as np
 
 # Use Agg backend for headless generation
 matplotlib.use('Agg')
 
-# In a real scenario, you would load a trained model here
-# e.g., model = joblib.load('case_outcome_model.pkl')
-# For the prototype, we simulate a model that provides consistent predictions
-# based on keywords found in the text.
+MODEL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../../case_outcome_model.pkl")
+try:
+    ML_MODEL = joblib.load(MODEL_PATH)
+except Exception as e:
+    print(f"Warning: Failed to load real ML model: {e}")
+    ML_MODEL = None
 
 def predict_case_outcome(raw_text: str, metadata: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -56,17 +60,29 @@ def predict_case_outcome(raw_text: str, metadata: Dict[str, Any]) -> Dict[str, A
     else:
         features["Statute of Limitations Risk"] += random.uniform(0.1, 0.3) # Low risk
 
-    # Calculate overall win probability (weighted average of features)
-    win_score = (
-        features["Evidence Strength"] * 0.35 +
-        features["Precedent Alignment"] * 0.25 +
-        features["Jurisdiction Favorability"] * 0.15 +
-        features["Documentation Completeness"] * 0.25 -
-        features["Statute of Limitations Risk"] * 0.20
-    )
-    
-    # Normalize between 0.1 and 0.95
-    win_probability = max(0.1, min(0.95, win_score))
+    if ML_MODEL is not None:
+        feature_vector = np.array([
+            features["Evidence Strength"],
+            features["Precedent Alignment"],
+            features["Jurisdiction Favorability"],
+            features["Documentation Completeness"],
+            features["Statute of Limitations Risk"]
+        ]).reshape(1, -1)
+        
+        # predict_proba returns probabilities for classes [0, 1] 
+        # so [0][1] is the probability of Win (1)
+        win_probability_raw = ML_MODEL.predict_proba(feature_vector)[0][1]
+        win_probability = max(0.05, min(0.95, win_probability_raw))
+    else:
+        # Fallback to simulated logic if model not loaded
+        win_score = (
+            features["Evidence Strength"] * 0.35 +
+            features["Precedent Alignment"] * 0.25 +
+            features["Jurisdiction Favorability"] * 0.15 +
+            features["Documentation Completeness"] * 0.25 -
+            features["Statute of Limitations Risk"] * 0.20
+        )
+        win_probability = max(0.1, min(0.95, win_score))
     
     outcome_label = "Uncertain"
     if win_probability >= 0.65:

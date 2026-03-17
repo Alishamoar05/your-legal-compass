@@ -6,7 +6,7 @@ class Settings:
     """Application settings loaded from environment variables."""
 
     PROJECT_NAME: str = "lawgen"
-    API_V1_PREFIX: str = "/api"
+    API_V1_PREFIX: str = "/api/v1"
 
     @property
     def SQLALCHEMY_DATABASE_URI(self) -> str:

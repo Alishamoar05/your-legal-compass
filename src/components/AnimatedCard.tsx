@@ -22,7 +22,7 @@ const AnimatedCard = ({ title, description, icon: Icon, href, delay = 0 }: Anima
     >
       <Link to={href}>
         <motion.div
-          className="relative group rounded-2xl bg-card p-8 card-shadow overflow-hidden cursor-pointer"
+          className="relative group rounded-2xl bg-card p-8 shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden cursor-pointer"
           whileHover={{ y: -6, scale: 1.03 }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
           onHoverStart={() => setHovered(true)}
@@ -32,7 +32,7 @@ const AnimatedCard = ({ title, description, icon: Icon, href, delay = 0 }: Anima
           <motion.div
             className="absolute inset-0 rounded-2xl"
             style={{
-              background: "linear-gradient(135deg, hsl(157 22% 39% / 0.4), hsl(43 64% 52% / 0.4), hsl(157 22% 39% / 0.4))",
+              background: "linear-gradient(135deg, rgba(79,122,106,0.6), rgba(189,152,101,0.6), rgba(79,122,106,0.6))",
               backgroundSize: "200% 200%",
             }}
             animate={hovered ? {
@@ -45,7 +45,7 @@ const AnimatedCard = ({ title, description, icon: Icon, href, delay = 0 }: Anima
           <div className="absolute inset-[2px] rounded-2xl bg-card" />
 
           {/* Hover gradient overlay */}
-          <div className="absolute inset-[2px] rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="absolute inset-[2px] rounded-2xl bg-gradient-to-br from-[#4f7a6a]/10 to-[#bd9865]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
           <div className="relative z-10">
             <motion.div

@@ -1,4 +1,4 @@
-import { LayoutDashboard, MessageSquare, Search, User } from "lucide-react";
+import { LayoutDashboard, MessageSquare, Search, User, FileText } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation } from "react-router-dom";
 import {
@@ -19,6 +19,7 @@ import { Link } from "react-router-dom";
 const items = [
   { title: "Dashboard", url: "/client-dashboard", icon: LayoutDashboard },
   { title: "Ask AI", url: "/client-dashboard/chat", icon: MessageSquare },
+  { title: "Document Summary", url: "/client-dashboard/documents", icon: FileText },
   { title: "Find Lawyer", url: "/client-dashboard/lawyers", icon: Search },
   { title: "Profile", url: "/client-dashboard/profile", icon: User },
 ];
